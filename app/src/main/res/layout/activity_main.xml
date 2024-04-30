@@ -9,10 +9,24 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/userEmail"/>
+        android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/welcomeMessage"
+        android:layout_gravity="center"
+        android:textSize="50sp"/>
+
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="109dp"
+            android:layout_height="100dp" />
+
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
