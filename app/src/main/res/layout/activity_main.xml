@@ -21,18 +21,35 @@
         android:layout_gravity="center"
         android:textSize="50sp"/>
 
-        <ImageView
-            android:id="@+id/profileImage"
-            android:layout_width="109dp"
-            android:layout_height="100dp" />
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="109dp"
+        android:layout_height="100dp" />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Logout"
         android:id="@+id/logoutButton"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="goToQuiz"
+        android:id="@+id/goToQuiz"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"/>
+
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
