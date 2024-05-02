@@ -40,16 +40,10 @@
         android:text="Logout"
         android:id="@+id/logoutButton"/>
 
-    <Button
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="goToQuiz"
-        android:id="@+id/goToQuiz"/>
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"/>
+        android:id="@+id/recyclerView"/>
 
 
 

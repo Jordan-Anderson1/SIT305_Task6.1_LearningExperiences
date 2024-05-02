@@ -33,11 +33,12 @@ public class QuizActivity extends AppCompatActivity {
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    TextView questionOneDetails, questionTwoDetails, questionThreeDetails;
+    TextView questionOneDetails, questionTwoDetails, questionThreeDetails, number, description;
     RadioButton q1option1, q1option2, q1option3, q2option1, q2option2, q2option3, q3option1, q3option2, q3option3;
     RadioGroup q1radioGroup, q2radioGroup, q3radioGroup;
     String answer1, answer2, answer3;
     Button submitButton;
+    String correctAnswer1, correctAnswer2, correctAnswer3;
 
 
     @Override
@@ -55,6 +56,8 @@ public class QuizActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String interest = intent.getStringExtra("interest");
         String url = "/getQuiz?topic=" + interest;
+
+        String taskNumber = intent.getStringExtra("taskNumber");
 
         questionOneDetails = findViewById(R.id.questionOneDetails);
         questionTwoDetails = findViewById(R.id.questionTwoDetails);
@@ -74,6 +77,14 @@ public class QuizActivity extends AppCompatActivity {
         q3radioGroup = findViewById(R.id.q3radioGroup);
 
         submitButton = findViewById(R.id.submitButton);
+
+        number = findViewById(R.id.number);
+        description = findViewById(R.id.description);
+
+        number.setText("Generated task " + taskNumber);
+        description.setText("here is your task based on your interest in " + interest);
+
+
 
 
         //API logic to retrieve quiz info.
@@ -95,6 +106,8 @@ public class QuizActivity extends AppCompatActivity {
                     if(quizResponse != null){
                         List<QuizResponse.QuizItem> quizItems = quizResponse.getQuiz();
 
+
+
                         //set questions and answer options
                         String firstQuestion = quizItems.get(0).getQuestion();
                         List<String> q1options= quizItems.get(0).getOptions();
@@ -102,18 +115,69 @@ public class QuizActivity extends AppCompatActivity {
                         q1option2.setText(q1options.get(1));
                         q1option3.setText(q1options.get(2));
 
+                        //converts correct answer from A, B, or C to string result.
+                        correctAnswer1 = quizItems.get(0).getCorrectAnswer();
+                        switch(correctAnswer1){
+                            case "A":
+                                correctAnswer1 = q1options.get(0);
+                                break;
+                            case "B":
+                                correctAnswer1 = q1options.get(1);
+                                break;
+                            case "C":
+                                correctAnswer1 = q1options.get(2);
+                                break;
+                            default:
+                                Log.d("Switch", "default");
+                                break;
+                        }
+
 
                         String secondQuestion = quizItems.get(1).getQuestion();
                         List<String> q2options = quizItems.get(1).getOptions();
                         q2option1.setText(q2options.get(0));
                         q2option2.setText(q2options.get(1));
                         q2option3.setText(q2options.get(2));
+                        correctAnswer2 = quizItems.get(1).getCorrectAnswer();
+
+                        correctAnswer2 = quizItems.get(0).getCorrectAnswer();
+                        switch(correctAnswer2){
+                            case "A":
+                                correctAnswer2 = q2options.get(0);
+                                break;
+                            case "B":
+                                correctAnswer2 = q2options.get(1);
+                                break;
+                            case "C":
+                                correctAnswer2 = q2options.get(2);
+                                break;
+                            default:
+                                Log.d("Switch", "default");
+                                break;
+                        }
 
                         String thirdQuestion = quizItems.get(2).getQuestion();
                         List<String> q3options = quizItems.get(2).getOptions();
                         q3option1.setText(q3options.get(0));
                         q3option2.setText(q3options.get(1));
                         q3option3.setText(q3options.get(2));
+                        correctAnswer3 = quizItems.get(2).getCorrectAnswer();
+
+                        correctAnswer3 = quizItems.get(0).getCorrectAnswer();
+                        switch(correctAnswer3){
+                            case "A":
+                                correctAnswer3 = q3options.get(0);
+                                break;
+                            case "B":
+                                correctAnswer3 = q3options.get(1);
+                                break;
+                            case "C":
+                                correctAnswer3 = q3options.get(2);
+                                break;
+                            default:
+                                Log.d("Switch", "default");
+                                break;
+                        }
 
 
                         //set question descriptions
@@ -142,6 +206,7 @@ public class QuizActivity extends AppCompatActivity {
                 RadioButton radioButton = findViewById(checkedId);
                 if(radioButton != null) {
                     answer1 = radioButton.getText().toString();
+
                 }
             }
         });
@@ -173,6 +238,12 @@ public class QuizActivity extends AppCompatActivity {
                 intent.putExtra("answer1", answer1);
                 intent.putExtra("answer2", answer2);
                 intent.putExtra("answer3", answer3);
+                intent.putExtra("correctAnswer1", correctAnswer1);
+                intent.putExtra("correctAnswer2", correctAnswer2);
+                intent.putExtra("correctAnswer3", correctAnswer3);
+
+
+
 
                 startActivity(intent);
                 finish();

@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -53,12 +55,14 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser user;
     FirebaseFirestore fStore;
 
-    Button logoutButton, goToQuizButton;
+    Button logoutButton;
 
     ImageView profileImage;
     TextView welcomeText, textView;
     StorageReference storageReference;
-    ListView listView;
+
+    RecyclerView recyclerView;
+    RecyclerAdapter recyclerAdapter;
 
 
     @Override
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        goToQuizButton = findViewById(R.id.goToQuiz);
+
         logoutButton = findViewById(R.id.logoutButton);
         profileImage = findViewById(R.id.profileImage);
 
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         welcomeText = findViewById(R.id.welcomeMessage);
         textView = findViewById(R.id.textView);
 
-        listView = findViewById(R.id.listView);
+        //listView = findViewById(R.id.listView);
 
 
         //get profile image from storage
@@ -129,15 +133,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        goToQuizButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
 
         //get List of selected interests
         String userId = auth.getCurrentUser().getUid();
@@ -152,25 +147,14 @@ public class MainActivity extends AppCompatActivity {
 
                         //add interests to a list and display
                         List<String> interestsList = (List<String>) document.get("interests");
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.list_item_layout, interestsList);
-                        listView.setAdapter(adapter);
+                        Log.d("interests", interestsList.get(0));
+                        recyclerView = findViewById(R.id.recyclerView);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                        recyclerAdapter = new RecyclerAdapter(interestsList);
+                        recyclerView.setAdapter(recyclerAdapter);
 
 
-                        //set onclick listener for each list item which takes user to quiz based on that interest
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                String selectedItem = interestsList.get(position);
 
-                                Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
-                                intent.putExtra("interest", selectedItem);
-                                startActivity(intent);
-                            }
-                        });
-
-
-                    }else{
-                        return;
                     }
                 }else{
                     return;
