@@ -3,8 +3,11 @@ package com.example.learningexperience;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +34,10 @@ public class QuizActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     TextView questionOneDetails, questionTwoDetails, questionThreeDetails;
-
     RadioButton q1option1, q1option2, q1option3, q2option1, q2option2, q2option3, q3option1, q3option2, q3option3;
-
-
-
-
+    RadioGroup q1radioGroup, q2radioGroup, q3radioGroup;
+    String answer1, answer2, answer3;
+    Button submitButton;
 
 
     @Override
@@ -50,6 +51,7 @@ public class QuizActivity extends AppCompatActivity {
             return insets;
         });
 
+        //get the selected interest from mainactivity
         Intent intent = getIntent();
         String interest = intent.getStringExtra("interest");
         String url = "/getQuiz?topic=" + interest;
@@ -67,9 +69,11 @@ public class QuizActivity extends AppCompatActivity {
         q3option2 = findViewById(R.id.q3option2);
         q3option3 = findViewById(R.id.q3option3);
 
-        //radio buttons
+        q1radioGroup = findViewById(R.id.q1radioGroup);
+        q2radioGroup = findViewById(R.id.q2radioGroup);
+        q3radioGroup = findViewById(R.id.q3radioGroup);
 
-
+        submitButton = findViewById(R.id.submitButton);
 
 
         //API logic to retrieve quiz info.
@@ -91,6 +95,7 @@ public class QuizActivity extends AppCompatActivity {
                     if(quizResponse != null){
                         List<QuizResponse.QuizItem> quizItems = quizResponse.getQuiz();
 
+                        //set questions and answer options
                         String firstQuestion = quizItems.get(0).getQuestion();
                         List<String> q1options= quizItems.get(0).getOptions();
                         q1option1.setText(q1options.get(0));
@@ -111,7 +116,7 @@ public class QuizActivity extends AppCompatActivity {
                         q3option3.setText(q3options.get(2));
 
 
-
+                        //set question descriptions
                         questionOneDetails.setText(firstQuestion);
                         questionTwoDetails.setText(secondQuestion);
                         questionThreeDetails.setText(thirdQuestion);
@@ -127,6 +132,50 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<QuizResponse> call, Throwable throwable) {
 
+            }
+        });
+
+        //set on click listener to get selected answers
+        q1radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = findViewById(checkedId);
+                if(radioButton != null) {
+                    answer1 = radioButton.getText().toString();
+                }
+            }
+        });
+
+        q2radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = findViewById(checkedId);
+                if(radioButton != null) {
+                    answer2 = radioButton.getText().toString();
+                }
+            }
+        });
+
+        q3radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = findViewById(checkedId);
+                if(radioButton != null) {
+                   answer3 = radioButton.getText().toString();
+                }
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ResultsActivity.class);
+                intent.putExtra("answer1", answer1);
+                intent.putExtra("answer2", answer2);
+                intent.putExtra("answer3", answer3);
+
+                startActivity(intent);
+                finish();
             }
         });
     }
