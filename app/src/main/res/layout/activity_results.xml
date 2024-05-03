@@ -9,25 +9,41 @@
     android:orientation="vertical"
     tools:context=".ResultsActivity">
 
-    <LinearLayout
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:background="#7ED1FD"
+        app:cardBackgroundColor="#7ED1FD"
+        android:layout_margin="25dp"
+        app:cardCornerRadius="8dp"
+        android:elevation="4dp">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"/>
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Answered by AI"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:background="#87F8F3"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="5dp"
+                android:src="@drawable/learning_machine_ai_icon"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Answered by AI"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 
     <TextView
         android:layout_width="match_parent"

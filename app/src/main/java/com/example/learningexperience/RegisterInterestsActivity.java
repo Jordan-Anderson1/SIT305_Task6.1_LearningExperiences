@@ -124,7 +124,7 @@ public class RegisterInterestsActivity extends AppCompatActivity {
 
                     webDevelopmentCardIsClicked = !webDevelopmentCardIsClicked;
 
-                    if (dataStructuresCardIsClicked) {
+                    if (webDevelopmentCardIsClicked) {
                         webDevelopmentCard.setCardBackgroundColor(getResources().getColor(R.color.clicked));
                         interests.add("web development");
                         Log.d("interests", String.valueOf(interests));
